@@ -35,7 +35,7 @@ fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon"
 streamlit.text(fruityvice_response.json())  #just writes data on the screen
 
 # normalize json file
-fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # show normalized json file in dataframe
 streamlit.dataframe(fruityvice_normalized)
 
