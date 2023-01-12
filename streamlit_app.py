@@ -1,5 +1,8 @@
-import streamlit
-   
+import streamlit # import stremlit
+import pandas as pd # import pandas
+import requests # import request
+import snowflake.connector # add snowflake connectors
+from urllib.error import URLError
 
 streamlit.title('My Parents New Healthy Diner')
 
@@ -11,8 +14,7 @@ streamlit.text('🥑🍞Avocado Toast')
 
 
 streamlit.header('🍌🥭 Build Your Own Fruit Smoothie 🥝🍇')
-# Import pandas and retrieve s3 bucket
-import pandas as pd
+#  fetch from s3 bucket
 my_fruit_list = pd.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 
 #Set Fruit Name as Index
@@ -32,7 +34,7 @@ streamlit.header("Fruityvice Fruit Advice!")
 fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
 streamlit.write('The user entered ', fruit_choice)
 
-import requests
+# use request library
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/"+ fruit_choice)
 #streamlit.text(fruityvice_response.json())  #just writes data on the screen
 
@@ -41,8 +43,6 @@ fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # show normalized json file in dataframe
 streamlit.dataframe(fruityvice_normalized)
 
-#add snowflake connectors
-import snowflake.connector
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"]) #uses connection settings in app secrets
 my_cur = my_cnx.cursor()
@@ -57,3 +57,6 @@ streamlit.dataframe(my_data_rows)
 # allow end user to add fruit to the list
 add_my_fruit = streamlit.text_input('What fruit would you like to add?','jackfruit')
 streamlit.write('Thanks for adding ', add_my_fruit)
+
+#this won't work
+my_cur.execute("insert into fruit_load_list values ('from stremlit')")
